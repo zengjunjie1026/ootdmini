@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOTD Mini Program Prototype</title>
+    <style>
+        body {
+            background-color: #e0eafc;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            padding: 40px;
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+        .prototype-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+        .prototype-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: #334155;
+        }
+        iframe {
+            border: none;
+            width: 430px; /* iPhone 16 Pro Max width */
+            height: 932px; /* iPhone 16 Pro Max height */
+            border-radius: 54px; /* Simulate rounded corners */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="prototype-container">
+        <h2 class="prototype-title">1. 欢迎页 (Welcome Screen)</h2>
+        <iframe src="welcome.html"></iframe>
+    </div>
+
+    <div class="prototype-container">
+        <h2 class="prototype-title">2. OOTD页 (OOTD Tab)</h2>
+        <iframe src="ootd.html"></iframe>
+    </div>
+
+    <div class="prototype-container">
+        <h2 class="prototype-title">3. 我的页面 (Profile Tab)</h2>
+        <iframe src="profile.html"></iframe>
+    </div>
+
+</body>
+</html> 

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOTD Tab - OOTD Mini Program</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+        .status-bar {
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2937;
+        }
+        .tab-bar {
+            height: 84px;
+            border-top: 1px solid #e5e7eb;
+        }
+        .carousel-container {
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+        .carousel-item {
+            scroll-snap-align: center;
+        }
+        .popup {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+
+    <!-- Status Bar -->
+    <div class="status-bar bg-white/80 backdrop-blur-sm">
+        <span>9:41</span>
+        <div class="flex gap-x-2 items-center">
+            <i class="fas fa-signal"></i>
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-4 space-y-6">
+        <!-- Header -->
+        <header class="flex justify-between items-center">
+            <div>
+                <p class="text-slate-500">Thu, 31 Oct</p>
+                <h1 class="text-2xl font-bold text-slate-800">Good morning</h1>
+            </div>
+            <button class="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow">
+                <i class="fas fa-bars text-slate-600"></i>
+            </button>
+        </header>
+
+        <!-- Today's Weather Card -->
+        <div class="rounded-3xl p-6 text-white relative overflow-hidden" style="background: linear-gradient(135deg, #fec84e, #ff9b50);">
+            <div class="relative z-10">
+                <p class="text-lg font-medium">Hyderabad</p>
+                <h2 class="text-8xl font-bold my-2">25<span class="align-top text-4xl">°C</span></h2>
+                <p class="text-lg">Mostly sunny</p>
+                <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+                    <div>
+                        <i class="fas fa-sun text-xl mb-1"></i>
+                        <p class="font-bold text-lg">7</p>
+                        <p class="text-sm opacity-90">UV Index</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-tint text-xl mb-1"></i>
+                        <p class="font-bold text-lg">61%</p>
+                        <p class="text-sm opacity-90">Humidity</p>
+                    </div>
+                    <div>
+                        <i class="fas fa-cloud-showers-heavy text-xl mb-1"></i>
+                        <p class="font-bold text-lg">4mm</p>
+                        <p class="text-sm opacity-90">Precipitation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7-Day Forecast -->
+        <div class="bg-white p-4 rounded-3xl shadow-sm">
+            <h3 class="font-bold text-slate-800 mb-4 px-2">Next days</h3>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between p-2 rounded-xl">
+                    <div class="flex items-center gap-x-4">
+                        <div class="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center"><i class="fas fa-cloud-sun text-sky-500"></i></div>
+                        <div>
+                            <p class="font-semibold text-slate-700">Friday, 1 Nov</p>
+                        </div>
+                    </div>
+                    <p class="font-bold text-lg text-slate-800">22°</p>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl">
+                    <div class="flex items-center gap-x-4">
+                        <div class="w-10 h-10 bg-sky-100 rounded-full flex items-center justify-center"><i class="fas fa-sun text-yellow-500"></i></div>
+                        <div>
+                            <p class="font-semibold text-slate-700">Saturday, 2 Nov</p>
+                        </div>
+                    </div>
+                    <p class="font-bold text-lg text-slate-800">25°</p>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl">
+                    <div class="flex items-center gap-x-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"><i class="fas fa-cloud-rain text-blue-500"></i></div>
+                        <div>
+                            <p class="font-semibold text-slate-700">Sunday, 3 Nov</p>
+                        </div>
+                    </div>
+                    <p class="font-bold text-lg text-slate-800">19°</p>
+                </div>
+                 <div class="flex items-center justify-between p-2 rounded-xl">
+                    <div class="flex items-center gap-x-4">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center"><i class="fas fa-cloud text-gray-500"></i></div>
+                        <div>
+                            <p class="font-semibold text-slate-700">Monday, 4 Nov</p>
+                        </div>
+                    </div>
+                    <p class="font-bold text-lg text-slate-800">20°</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Today's Outfit Style -->
+        <div class="bg-white p-6 rounded-3xl shadow-sm">
+            <h3 class="font-bold text-slate-800 mb-4">今日穿搭风格</h3>
+            <div id="style-selector" class="flex flex-wrap gap-3">
+                <!-- Female Styles -->
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">甜酷风</button>
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">温柔风</button>
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">学院风</button>
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">韩系简约风</button>
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">设计师风</button>
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">复古文艺风</button>
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">小香风</button>
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">森女系</button>
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">运动休闲风</button>
+                <button class="style-btn flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-full text-sm">Y2K风</button>
+            </div>
+            <button id="generate-btn" class="w-full bg-slate-800 text-white font-semibold py-3 px-6 rounded-full mt-6 shadow-lg hover:bg-slate-900 transition-colors duration-300 disabled:bg-slate-400" disabled>
+                生成今日OOTD
+            </button>
+        </div>
+
+    </main>
+    
+    <!-- Tab Bar -->
+    <nav class="tab-bar bg-white/80 backdrop-blur-sm flex justify-around items-center">
+        <a href="#" class="text-center text-blue-600">
+            <i class="fas fa-tshirt text-2xl"></i>
+            <span class="block text-xs font-medium mt-1">OOTD</span>
+        </a>
+        <a href="#" class="text-center text-slate-500">
+            <i class="far fa-user-circle text-2xl"></i>
+            <span class="block text-xs font-medium mt-1">我的</span>
+        </a>
+    </nav>
+    
+    <!-- OOTD Popup -->
+    <div id="ootd-popup" class="popup fixed inset-x-0 bottom-0 bg-white rounded-t-3xl shadow-[0_-10px_30px_rgba(0,0,0,0.1)] p-6 transform translate-y-full z-50">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="font-bold text-slate-800 text-lg">今日甜酷风穿搭</h3>
+            <button id="close-popup-btn" class="text-slate-500 hover:text-slate-800">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <!-- Image Carousel -->
+        <div class="relative">
+            <div id="carousel" class="carousel-container flex overflow-x-auto snap-x snap-mandatory rounded-2xl">
+                <div class="carousel-item flex-shrink-0 w-full snap-center">
+                    <img src="https://images.unsplash.com/photo-1678199257908-1422045e454b?q=80&w=3387&auto=format&fit=crop" class="w-full h-64 object-cover rounded-2xl" alt="Sweet and Cool Outfit 1">
+                </div>
+                <div class="carousel-item flex-shrink-0 w-full snap-center">
+                    <img src="https://images.unsplash.com/photo-1551803091-e37a9d706a5a?q=80&w=3387&auto=format&fit=crop" class="w-full h-64 object-cover rounded-2xl" alt="Sweet and Cool Outfit 2">
+                </div>
+                <div class="carousel-item flex-shrink-0 w-full snap-center">
+                    <img src="https://images.unsplash.com/photo-1525488748359-66c353952c42?q=80&w=3387&auto=format&fit=crop" class="w-full h-64 object-cover rounded-2xl" alt="Sweet and Cool Outfit 3">
+                </div>
+            </div>
+            <div id="carousel-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-x-2"></div>
+        </div>
+
+        <!-- AI Suggestion -->
+        <div class="mt-4">
+            <h4 class="font-semibold text-slate-700 mb-2">AI 穿搭建议</h4>
+            <p class="text-slate-600 text-sm">
+                今日天气晴朗，微风，非常适合甜酷风。可以尝试黑色皮质短裙搭配一件简约的白色印花T恤。外搭一件宽松的牛仔夹克，再配上马丁靴，既能展现酷感又不失甜美。金属配饰如项链和耳环会是点睛之笔。
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        const generateBtn = document.getElementById('generate-btn');
+        const styleSelector = document.getElementById('style-selector');
+        const styleButtons = styleSelector.querySelectorAll('.style-btn');
+        const ootdPopup = document.getElementById('ootd-popup');
+        const closePopupBtn = document.getElementById('close-popup-btn');
+        let selectedStyle = null;
+
+        styleButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                styleButtons.forEach(btn => {
+                    btn.classList.remove('bg-slate-800', 'text-white');
+                    btn.classList.add('bg-slate-100', 'text-slate-700');
+                });
+                button.classList.add('bg-slate-800', 'text-white');
+                button.classList.remove('bg-slate-100', 'text-slate-700');
+                selectedStyle = button.textContent;
+                generateBtn.disabled = false;
+            });
+        });
+
+        generateBtn.addEventListener('click', () => {
+            if (!selectedStyle) return;
+            document.querySelector('#ootd-popup h3').textContent = `今日${selectedStyle}穿搭`;
+            ootdPopup.classList.remove('translate-y-full');
+        });
+        
+        closePopupBtn.addEventListener('click', () => {
+            ootdPopup.classList.add('translate-y-full');
+        });
+
+        // Carousel logic
+        const carousel = document.getElementById('carousel');
+        const dotsContainer = document.getElementById('carousel-dots');
+        const items = carousel.querySelectorAll('.carousel-item');
+        
+        items.forEach((_, index) => {
+            const dot = document.createElement('button');
+            dot.classList.add('w-2', 'h-2', 'rounded-full', 'transition-colors');
+            dot.classList.add(index === 0 ? 'bg-white' : 'bg-white/50');
+            dot.addEventListener('click', () => {
+                carousel.scrollTo({
+                    left: carousel.offsetWidth * index,
+                    behavior: 'smooth'
+                });
+            });
+            dotsContainer.appendChild(dot);
+        });
+
+        carousel.addEventListener('scroll', () => {
+            const index = Math.round(carousel.scrollLeft / carousel.offsetWidth);
+            const dots = dotsContainer.querySelectorAll('button');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('bg-white', i === index);
+                dot.classList.toggle('bg-white/50', i !== index);
+            });
+        });
+    </script>
+
+</body>
+</html> 
